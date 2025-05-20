@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أسئلة C# و ASP.NET</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background-color: #2c3e50;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+
+        #refresh {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        #refresh:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .question-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-number {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .question-text {
+            margin-bottom: 15px;
+        }
+
+        .options {
+            margin: 15px 0;
+        }
+
+        .option {
+            margin: 8px 0;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .option:hover {
+            background-color: #e9ecef;
+        }
+
+        .check-answer {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .check-answer:hover {
+            background-color: #218838;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .questions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>أسئلة C# و ASP.NET</h1>
+            <button id="refresh">تحديث الأسئلة ↻</button>
+        </header>
+        
+        <div class="questions-grid" id="questionsContainer">
+            <!-- الأسئلة ستظهر هنا بشكل ديناميكي -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Which control supports font, link, color, image from file?",
+                options: ["RichTextbox", "Textbox", "Label", "All of the above"],
+                correct: 0
+            },
+            {
+                question: "Arrays in C# are ...",
+                options: ["Reference objects", "Value objects", "Arithmetic objects", "Logical objects"],
+                correct: 0
+            },
+            {
+                question: "The ... language allows more than one method in a single class",
+                options: ["J#", "C++", "C", "All of the above"],
+                correct: 3
+            },
+            {
+                question: "A variable which is declared inside a method is called a... variable",
+                options: ["Local", "Private", "Static", "Serial"],
+                correct: 0
+            },
+            {
+                question: "Which of the following is the necessary condition for implementing delegates?",
+                options: ["Class declaration", "Method declaration", "Namespace declaration", "None of the above"],
+                correct: 0
+            },
+            {
+                question: "A ... is an identifier that denotes a storage location",
+                options: ["Constant", "Variable", "Object", "Reference"],
+                correct: 1
+            },
+            {
+                question: "C# treats the multiple catch statements like cases in a... statement.",
+                options: ["If", "Switch", "For", "While"],
+                correct: 1
+            },
+            {
+                question: "... method can be called directly using the class name.",
+                options: ["Private", "Static", "Public", "Virtual"],
+                correct: 1
+            },
+            {
+                question: "To prevent a class from being inherited, ... keyword is used.",
+                options: ["sealed", "final", "const", "None of above"],
+                correct: 0
+            },
+            {
+                question: "By default, all the members of an Interface are ... and ...",
+                options: ["Private and virtual", "Public and abstract", "Protected and abstract", "Public and Virtual"],
+                correct: 1
+            },
+            {
+                question: "... accessor is used to get the value of a property.",
+                options: ["setValue", "getValue", "set", "get"],
+                correct: 3
+            },
+            {
+                question: "By default, the first Enumeration value has ... constant associated.",
+                options: ["0", "1", "2", "3"],
+                correct: 0
+            },
+            {
+                question: "... operator is used for removing methods from an event.",
+                options: ["+=", "-=", "==", "+-"],
+                correct: 1
+            },
+            {
+                question: "Interfaces are ... by other interfaces.",
+                options: ["Inherited", "Copied", "Included", "Implemented"],
+                correct: 0
+            },
+            {
+                question: "Form includes...",
+                options: ["MDI Form", "Dialog Box", "Message Box", "All of above"],
+                correct: 3
+            },
+            {
+                question: "Basic controls have...",
+                options: ["Methods", "Properties", "Events", "All of above"],
+                correct: 3
+            },
+            {
+                question: "ButtonBase class has...",
+                options: ["Button class", "RadioButton class", "CheckBox class", "All of above"],
+                correct: 3
+            },
+            {
+                question: "Which event generally is used with TextBox?",
+                options: ["LostFocus", "KeyUp", "KeyPress", "MouseUp"],
+                correct: 2
+            },
+            {
+                question: "What is not a state of CheckBox?",
+                options: ["Indeterminate", "Checked", "Unchecked", "Determinate"],
+                correct: 3
+            },
+            {
+                question: "Which view modes supported by ListView?",
+                options: ["LargeIcon", "SmallIcon", "List and Details", "All of above"],
+                correct: 3
+            },
+            {
+                question: "ADO stands for ...",
+                options: ["ActiveX Data Object", "Acronym Data Object", "Active Data Object", "ActiveX Data Organization"],
+                correct: 0
+            },
+            {
+                question: "Which method of Command class is used to retrieve data from source to DataReader object?",
+                options: ["ExecuteNonQuery", "ExecuteReader", "ExecuteScalar", "None"],
+                correct: 1
+            },
+            {
+                question: "Which method of command class is used to retrieve a single value from DataBase?",
+                options: ["ExecuteScalar", "ExecuteNonQuery", "ExecuteReader", "None"],
+                correct: 0
+            },
+            {
+                question: "Which one is true for DataSet?",
+                options: ["Points to a single table", "provides disconnected environment", "Virtual database", "Multiple DataTables"],
+                correct: 1
+            },
+            {
+                question: "Which one is false for DataSet",
+                options: ["Points to a single table", "does not support data relation", "Virtual database", "None"],
+                correct: 0
+            },
+            {
+                question: "DataSet generate new class is based on XML is known as...",
+                options: ["Typed DataSet", "Untyped DataSet", "XML DataSet", "None"],
+                correct: 0
+            },
+            {
+                question: "...is the default event of Form control.",
+                options: ["KeyPress", "DoubleClick", "Click", "Load"],
+                correct: 3
+            },
+            {
+                question: "...is default event of ComboBox.",
+                options: ["SelectedIndexChanged", "SelectedValueChanged", "SelectionIndexChanged", "SelectionChangeCommitted"],
+                correct: 0
+            },
+            {
+                question: "Which component is used in Connected Architecture?",
+                options: ["DataReader", "DataAdapter", "DataSet", "None"],
+                correct: 0
+            },
+            {
+                question: "With the use of ... property we can insert options in combobox.",
+                options: ["Item", "Items", "SelectedIndex", "SelectedValueChanged"],
+                correct: 1
+            },
+            {
+                question: "...is default event of ListBox.",
+                options: ["SelectedIndexChanged", "SelectedValueChanged", "SelectionIndexChanged", "SelectionChangeCommitted"],
+                correct: 0
+            },
+            {
+                question: "Which of the following is a contextual keyword in C#?",
+                options: ["get", "set", "add", "All Of Above"],
+                correct: 3
+            },
+            {
+                question: "Which of the following converts a type (integer or string type) to date-time structures in C#?",
+                options: ["ToInt", "ToSingle", "ToChar", "ToDateTime"],
+                correct: 3
+            },
+            {
+                question: "...method is called when a C# program is executed.",
+                options: ["Class()", "Main()", "Submain()", "namespace"],
+                correct: 1
+            },
+            {
+                question: "...are reserved, and cannot be used as identifiers.",
+                options: ["Keywords", "literal", "variables", "Identifiers"],
+                correct: 0
+            },
+            {
+                question: "Boxing converts a value type on the stack to an on the heap.",
+                options: ["Bool type", "Instance type", "Class type", "Object type"],
+                correct: 3
+            },
+            {
+                question: "Class data members are ... by default.",
+                options: ["Protected", "Public", "Private", "Default"],
+                correct: 2
+            },
+            {
+                question: "C# does not support:",
+                options: ["abstraction", "polymorphism", "inheritance", "multiple inheritance"],
+                correct: 3
+            },
+            {
+                question: "A... block enclose the code that could throw an exception.",
+                options: ["Try", "Catch", "Exception", "Event"],
+                correct: 0
+            },
+            {
+                question: "Exception objects are derived from the class.",
+                options: ["Exception", "Error", "Try", "Catch"],
+                correct: 0
+            },
+            {
+                question: "A delegate defines",
+                options: ["a Washington representative", "a means of passing arrays into methods", "a substitute for an inherited method", "a class that encapsulates methods"],
+                correct: 3
+            },
+            {
+                question: "Which of the following is NOT the MessageBoxButtons enumeration value.",
+                options: ["Ok", "OkCancel", "YesNo", "None of above"],
+                correct: 3
+            },
+            {
+                question: "... event occurs when a key is pressed while the form has the focus.",
+                options: ["Keydown", "Keypress", "Keyup", "KeyEnter"],
+                correct: 1
+            },
+            {
+                question: "Which keyword is used for correct implementation of an interface in C#.NET?",
+                options: ["interface", "intf", "This", "base"],
+                correct: 0
+            },
+            {
+                question: "Difference between Convert.ToString() and ToString()",
+                options: ["Convert.ToString() handles null values but ToString() doesn't", "ToString() output as per format supplied", "Convert.ToString() only handles null values", "None"],
+                correct: 0
+            },
+            {
+                question: "...object is used to fill a DataSet/DataTable with query results in ADO.net.",
+                options: ["DataReader", "Dataset", "DataAdapter", "DataTables"],
+                correct: 2
+            },
+            {
+                question: "Using... property we can set the sequence of the TAB key for the controls",
+                options: ["Value", "Values", "Text", "Name"],
+                correct: 2
+            },
+            {
+                question: "SDI Stands for",
+                options: ["Single Document Interface", "Single Data Integration", "Structure Document Interface", "None of above"],
+                correct: 0
+            },
+            {
+                question: "...method is default event of checkbox",
+                options: ["Checked", "Text", "Both", "None of above"],
+                correct: 0
+            },
+            {
+                question: "List Box is collection of...",
+                options: ["Nodes", "Text", "Items", "None of above"],
+                correct: 2
+            },
+            {
+                question: "...are best use for displaying large number of choices.",
+                options: ["ListBox", "ComboBox", "TextBox", "CheckBox"],
+                correct: 0
+            },
+            {
+                question: "To open any dialog control we need to call ... method.",
+                options: ["ShowDialog()", "Show()", "Shows()", "None of above"],
+                correct: 0
+            },
+            {
+                question: "The main starting node is called... node in Treeview.",
+                options: ["child node", "root node", "parent node", "focus node"],
+                correct: 1
+            },
+            {
+                question: "...control allow us to save the file in a specified location.",
+                options: ["SaveFileDialog", "openFileDialog", "DataAdapter", "None of above"],
+                correct: 0
+            },
+            {
+                question: "To raise event of Timer control we need to set... property.",
+                options: ["Enable", "Interval", "Disable", "None of above"],
+                correct: 1
+            },
+            {
+                question: "Full form of MSIL",
+                options: ["Microsoft Integrated Language", "Microsoft Interconnect Language", "Microsoft Intermediate Language", "Dynamic Link Library"],
+                correct: 2
+            },
+            {
+                question: "DLL Stands For",
+                options: ["Dynamic Language Library", "Dynamic Link Library", "Deploy Link Library", "None of above"],
+                correct: 1
+            },
+            {
+                question: "BCL Stand For",
+                options: ["Base Class Language", "Base Class Library", "Blank Class Library", "None of above"],
+                correct: 1
+            },
+            {
+                question: "JIT converts ... into ...",
+                options: ["MSIL to Native machine code", "Native machine code to MSIL", "Both", "None of above"],
+                correct: 0
+            },
+            {
+                question: "Using keyword is used to imports ...",
+                options: ["class", "method", "namespace", "None of above"],
+                correct: 2
+            },
+            {
+                question: "IDE Stands for",
+                options: ["Integrated Develop Enviornment", "Integrity Develop Envioenment", "Integrated Development Enviornment", "None of above"],
+                correct: 2
+            },
+            {
+                question: "Extension of C# program is...",
+                options: [".sln", ".aspx", ".asax", ".cs"],
+                correct: 3
+            },
+            {
+                question: "There are two types of scope of the variable ... and ...",
+                options: ["Data Type Name & Variable Name", "Data Type Name & Class Name", "Class Name & Function Name", "None of above"],
+                correct: 0
+            },
+            {
+                question: "Indexer can't be ...",
+                options: ["Dynamic", "Disconnected", "Static", "None of above"],
+                correct: 2
+            },
+            {
+                question: "Data Adapter is used in... Architecture.",
+                options: ["Disconnected", "Connected", "Both", "None of above"],
+                correct: 0
+            },
+            {
+                question: "...keyword is used for creating an enumeration.",
+                options: ["enum", "struct", "class", "object"],
+                correct: 0
+            },
+            {
+                question: "...class is used for inhertiance purposes.",
+                options: ["Local", "static", "sealed", "abstract"],
+                correct: 3
+            },
+            {
+                question: "...variables are shared between all the object of a class.",
+                options: ["private", "static", "internal", "virtual"],
+                correct: 1
+            },
+            {
+                question: "...keyword is used for skipping an iteration of a loop.",
+                options: ["break", "continue", "exit", "skip"],
+                correct: 1
+            },
+            {
+                question: "...keyword is used for terminating a loop.",
+                options: ["break", "continue", "exit", "skip"],
+                correct: 0
+            },
+            {
+                question: "...is a collection of objects.",
+                options: ["BitArray", "HashTable", "ArrayList", "Queue"],
+                correct: 2
+            },
+            {
+                question: "Section 3 of crystal report include...",
+                options: ["Report Header Section", "Report Footer Section", "Detailed Section", "None of above"],
+                correct: 2
+            },
+            {
+                question: "Section 1 of crystal report include...",
+                options: ["Report Header Section", "Report Footer Section", "Detailed Section", "None of above"],
+                correct: 0
+            },
+            {
+                question: "...event will occur whenever the user control load.",
+                options: ["Load", "Click", "Text", "None of above"],
+                correct: 0
+            },
+            {
+                question: "...is the extension of user control file.",
+                options: [".aspx", ".asax", ".ascx", ".cs"],
+                correct: 2
+            },
+            {
+                question: "Which namespace contains DataTable and DataSet classes?",
+                options: ["System", "System.Data", "System.Data.SqlClient", "System.Windows.Forms"],
+                correct: 1
+            },
+            {
+                question: "Which namepsace contains SqlConnection class?",
+                options: ["System.Data", "System.Data.SqlClient", "System.Windows.Forms", "None of above"],
+                correct: 1
+            },
+            {
+                question: "CLS stands for...",
+                options: ["C# language Standard", "Common Language specification", "Common Language Standard", "C# language Specification"],
+                correct: 1
+            },
+            {
+                question: "Code that runs under CLR is known as...",
+                options: ["Unmanaged", "Managed", "Distributed", "Native"],
+                correct: 1
+            },
+            {
+                question: "Fill Method of Data adapter is used to fill...",
+                options: ["DataReader", "DataSet", "DataAdapter", "None"],
+                correct: 1
+            },
+            {
+                question: "ADO Stands for...",
+                options: ["ActiveX Data Object", "Acronym Data Object", "Active Data Object", "ActiveX Data Organization"],
+                correct: 0
+            },
+            {
+                question: "Which method is used to Execute a DML Queries?",
+                options: ["Execute Reader", "Execute Scalar", "Execute NonQuery", "None"],
+                correct: 2
+            },
+            {
+                question: "C# does not support... destructors.",
+                options: ["parameterised", "parameterless", "public", "virtual"],
+                correct: 0
+            },
+            {
+                question: "Sealed Classes cannot be a child class.",
+                options: ["TRUE", "FALSE", "Cant Say", "none"],
+                correct: 0
+            },
+            {
+                question: "Boxing in .Net allows the user to convert",
+                options: ["a interger type to double", "a double type to interger", "a value type to reference type", "a reference type to value type"],
+                correct: 2
+            },
+            {
+                question: "Full form of CLR",
+                options: ["Callable Language Runtime", "Common Language Runtime", "Common Length Restrictions", "Common Language Runtime"],
+                correct: 1
+            },
+            {
+                question: "Arrays in C# are ... type objects",
+                options: ["Reference", "Logical", "Value", "Arithmetic"],
+                correct: 0
+            },
+            {
+                question: "A C# Program is first converted to ... code.",
+                options: ["MSIL", "C++", "Binary", "C"],
+                correct: 0
+            },
+            {
+                question: "Which of the following is NOT A type of JIT Compiler?",
+                options: ["Normal JIT", "Econo-JIT", "Pre-JIT", "KM-JIT"],
+                correct: 3
+            },
+            {
+                question: "C# does not support...",
+                options: ["Abstraction", "Polymorphism", "Inheritance", "Multiple Inheritance"],
+                correct: 3
+            },
+            {
+                question: "A delegate stores the reference of a ...",
+                options: ["Class", "Method", "Array", "Pointer"],
+                correct: 1
+            },
+            {
+                question: "Every class directly or indirectly extends the... class.",
+                options: ["System", "Object", "Drawing", "Console"],
+                correct: 1
+            },
+            {
+                question: "A variable can be made constant using ... keyword.",
+                options: ["sealed", "final", "const", "None of above"],
+                correct: 2
+            },
+            {
+                question: "... keyword can be used to access members of parent class.",
+                options: ["super", "base", "parent", "final"],
+                correct: 1
+            },
+            {
+                question: "... type conversions are performed automatically by .NET Framework.",
+                options: ["Explicit", "Internal", "External", "Implicit"],
+                correct: 3
+            },
+            {
+                question: "... accessor is used to set the value of a property.",
+                options: ["getValue", "set", "get", "setValue"],
+                correct: 1
+            },
+            {
+                question: "... keyword is used in indexers.",
+                options: ["this", "base", "super", "virtual"],
+                correct: 0
+            },
+            {
+                question: "ArrayList can store ... type of objects.",
+                options: ["Integer", "Reference", "Value", "Arithmetic"],
+                correct: 1
+            },
+            {
+                question: "... operator is used for adding methods to an event.",
+                options: ["+=", "-=", "==", "+-"],
+                correct: 0
+            },
+            {
+                question: "Interfaces are... by other classes.",
+                options: ["Inherited", "Copied", "Included", "Implemented"],
+                correct: 3
+            },
+            {
+                question: "Classes are... by other classes.",
+                options: ["Inherited", "Copied", "Included", "Implemented"],
+                correct: 0
+            },
+            {
+                question: "What is not belonging to Windows.Form?",
+                options: ["Control", "Container", "Component", "None"],
+                correct: 3
+            },
+            {
+                question: "Show() method of MessageBox class returns ...",
+                options: ["DialogResult", "String", "Message", "None"],
+                correct: 0
+            },
+            {
+                question: "Key Value property returns...",
+                options: ["An integer value", "A character value", "Astring value", "None"],
+                correct: 1
+            },
+            {
+                question: "Which control supports font, linkm color, image, form file?",
+                options: ["RitchTextBox", "TextBox", "Label", "All of above"],
+                correct: 0
+            },
+            {
+                question: "TextBox class is derived from...",
+                options: ["TextBase class", "TextBoxBase class", "Text class", "None"],
+                correct: 1
+            },
+            {
+                question: "The RadioButton control can display...",
+                options: ["Text", "Image", "None", "Both Text and Image"],
+                correct: 3
+            },
+            {
+                question: "ListControl class has...",
+                options: ["ComboBox", "ListBox", "CheckedListBox", "All of above"],
+                correct: 3
+            },
+            {
+                question: "Scrollbar class has...",
+                options: ["HscrollBar", "VscrollBar", "Both a and b", "None"],
+                correct: 2
+            },
+            {
+                question: "Which object is not a part of .Net Data Provider?",
+                options: ["Connection object", "Command object", "DataAdapter object", "None"],
+                correct: 3
+            },
+            {
+                question: "It is used to exchange data between dataset to datasource",
+                options: ["DataReader", "DataAdapter", "Command object", "None"],
+                correct: 1
+            },
+            {
+                question: "Fill method of DataAdapter is used to fill...",
+                options: ["DataReader", "DataSet", "DataAdapter", "None"],
+                correct: 1
+            },
+            {
+                question: "Which method used to release the resource that DataAdapter class uses?",
+                options: ["Fill()", "Release()", "Dispose()", "Close()"],
+                correct: 2
+            },
+            {
+                question: "... is default event of TextBox.",
+                options: ["Load", "Click", "TextEntered", "TextChanged"],
+                correct: 3
+            },
+            {
+                question: "Which component is used in DisConnected Architecture?",
+                options: ["DataReader", "DataSet", "DataScalar", "None"],
+                correct: 1
+            },
+            {
+                question: "... is default event of CheckBox.",
+                options: ["CheckedChanged", "CheckStateChanged", "Click", "Text"],
+                correct: 0
+            },
+            {
+                question: "Which of the following converts a type to a Boolean value, where possible in C#?",
+                options: ["ToDateTime", "ToBoolean", "ToSingle", "ToChar"],
+                correct: 1
+            },
+            {
+                question: "CLR is the .NET equivalent of...",
+                options: ["Java Virtual Machine", "Common Language Runtime", "Common Type System", "Common Language Specification"],
+                correct: 0
+            },
+            {
+                question: "A... is a variable whose value cannot be changed during execution.",
+                options: ["Constant", "Static variable", "Value", "Common"],
+                correct: 0
+            },
+            {
+                question: "C# has ... operator, useful for making two way decisions.",
+                options: ["Looping", "Functional", "Exponential", "Conditional"],
+                correct: 3
+            },
+            {
+                question: "An ... is a group of contiguous or related data items that share a common name.",
+                options: ["Operator", "Integer", "Exponential", "Array"],
+                correct: 3
+            },
+            {
+                question: "Objects in C# are ... type variables",
+                options: ["Reference", "Logical", "Value", "Arithmetic"],
+                correct: 0
+            },
+            {
+                question: "... variables are visible only in the block they are declared.",
+                options: ["System", "Global", "Local", "Console"],
+                correct: 2
+            },
+            {
+                question: "... class catches all the exception in a try...catch statement.",
+                options: ["RuntimeException", "SystemError", "Exception", "ArithmeticException"],
+                correct: 2
+            },
+            {
+                question: "Which of the following is/are not types of arrays in C#?",
+                options: ["Single-Dimensional", "Multidimensional", "Jagged arrays", "Jazzed arrays"],
+                correct: 3
+            },
+            {
+                question: "Which namespace contains all other important .NET namespaces?",
+                options: ["Object", "Drawing", "Console", "System"],
+                correct: 3
+            },
+            {
+                question: "A variable declared inside a method is called a... variable",
+                options: ["Static", "Private", "Local", "Serial"],
+                correct: 2
+            },
+            {
+                question: "int keyword targets to which .Net type?",
+                options: ["System.Int8", "System.Int16", "System.Int32", "System.Int64"],
+                correct: 2
+            },
+            {
+                question: "... class is built into the .Net Framework to display messages and accept input from the user.",
+                options: ["Msgbox", "MessageBox", "InputBox", "DisplayBox"],
+                correct: 1
+            },
+            {
+                question: "... class represents a node of a TreeView.",
+                options: ["TreeNode", "Node", "TreeNodeCollection", "None of above"],
+                correct: 0
+            },
+            {
+                question: "The RangeValidator control supports the following data types",
+                options: ["Integer only", "String", "Date, Integer and String", "Date and Integer"],
+                correct: 2
+            },
+            {
+                question: "Can you store multiple data types in System.Array?",
+                options: ["No", "Yes", "None of above", "Can't say"],
+                correct: 0
+            },
+            {
+                question: "Unboxing in .Net allows the user to convert",
+                options: ["a interger type to double", "a reference type to a value type", "a value type to a reference type", "a double type to interger"],
+                correct: 1
+            },
+            {
+                question: "We can add control on the form using... and ...",
+                options: ["Design Time & Run Time", "Properties & Methods", "Multiple Document Interface", "None of above"],
+                correct: 0
+            },
+            {
+                question: "MDI Stands for",
+                options: ["Master Data Integration", "Multiple Data Integration", "Multiple Data Integrity", "Multiple Document Interface"],
+                correct: 3
+            },
+            {
+                question: "MDF Stands for",
+                options: ["Master Data File", "Master Database File", "Master Data Format", "None of above"],
+                correct: 1
+            },
+            {
+                question: "TreeView is a collection of ...",
+                options: ["TreeNode", "Node", "Folder", "Items"],
+                correct: 0
+            },
+            {
+                question: "... displaying data in a drop-down style format.",
+                options: ["ListBox", "ComboBox", "TextBox", "None of above"],
+                correct: 1
+            },
+            {
+                question: "Full form of JIT",
+                options: ["Just In Time", "Just In Tick", "Java In Time", "None of above"],
+                correct: 0
+            },
+            {
+                question: "GC Stands For",
+                options: ["Garbage Collector", "Garbage Collection", "Garbage Collect", "None of above"],
+                correct: 1
+            },
+            {
+                question: "FCL Stands For",
+                options: ["Framework Class Library", "Framework Class Language", "Function Class Library", "None of above"],
+                correct: 0
+            },
+            {
+                question: "Data Reader is used in Architecture.",
+                options: ["Disconnected", "Connected", "Both", "None of above"],
+                correct: 1
+            },
+            {
+                question: "ExecuteReader method is used in which Architecture.",
+                options: ["Disconnected", "Connected", "Both", "None of above"],
+                correct: 1
+            },
+            {
+                question: "XML Stands for",
+                options: ["Extensible Markup Language", "Xtensible Markup Language", "Extensible managed Language", "None of above"],
+                correct: 0
+            },
+            {
+                question: "Class is a collection of ... And ...",
+                options: ["Data member & functions", "Data function & constructor", "Data member & Constructor", "None of above"],
+                correct: 0
+            },
+            {
+                question: "The destructor should be start with... symbol.",
+                options: ["!", "@", "#", "~"],
+                correct: 3
+            },
+            {
+                question: "... is referred as smart arrays.",
+                options: ["Inheritance", "Delegate", "Class", "Indexer"],
+                correct: 3
+            },
+            {
+                question: "... keyword is used for overloading operators.",
+                options: ["override", "overload", "operator", "new"],
+                correct: 2
+            },
+            {
+                question: "... keyword is used for passing parameter by reference.",
+                options: ["for", "ref", "static", "base"],
+                correct: 1
+            },
+            {
+                question: "... keyword is used when creating a single class in multiple files.",
+                options: ["internal", "private", "partial", "unsafe"],
+                correct: 2
+            },
+            {
+                question: "... method is used to close the connection.",
+                options: ["close()", "exit()", "abandon()", "None of above"],
+                correct: 0
+            },
+            {
+                question: "... is default property of TextBox.",
+                options: ["Color", "Text", "background color", "None of above"],
+                correct: 1
+            },
+            {
+                question: "Converting a smaller type to bigger type is an example of... type casting.",
+                options: ["Implicit", "Explicit", "External", "Internal"],
+                correct: 0
+            },
+            {
+                question: "Which method is used to execute DML Queries?",
+                options: ["Fill()", "ExecuteReader()", "ExecuteNonQuery()", "None of above"],
+                correct: 2
+            },
+            {
+                question: "... project type allows to create Command-line based applications.",
+                options: ["Console", "Class Library", "ASP.NET Web Forms", "Windows Forms"],
+                correct: 0
+            },
+            {
+                question: "... is used to display the data in tabular format.",
+                options: ["DataGridView", "Panel", "GroupBox", "DataRow"],
+                correct: 0
+            },
+            {
+                question: "... is a virtual database that is stored locally.",
+                options: ["DataRow", "DataColumn", "DataSet", "DataAdapter"],
+                correct: 2
+            }
+        ];
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function displayQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            
+            const shuffledQuestions = shuffleArray(questions).slice(0, 180); // عرض 10 أسئلة عشوائية
+            
+            shuffledQuestions.forEach((q, index) => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'question-card';
+                
+                let optionsHtml = '';
+                q.options.forEach((opt, optIndex) => {
+                    optionsHtml += `
+                        <div class="option">
+                            <input type="radio" id="q${index}_opt${optIndex}" name="q${index}" value="${optIndex}">
+                            <label for="q${index}_opt${optIndex}">${opt}</label>
+                        </div>
+                    `;
+                });
+                
+                questionElement.innerHTML = `
+                    <div class="question-number">Question ${index + 1}</div>
+                    <p class="question-text">${q.question}</p>
+                    <div class="options">${optionsHtml}</div>
+                    <button class="check-answer" data-correct="${q.correct}">Check Answer</button>
+                    <div class="feedback"></div>
+                `;
+                
+                container.appendChild(questionElement);
+            });
+
+            // إضافة أحداث لأزرار التحقق
+            document.querySelectorAll('.check-answer').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const correctIndex = parseInt(this.getAttribute('data-correct'));
+                    const selected = this.parentElement.querySelector(`input[name="q${this.parentElement.id}"]:checked`);
+                    const feedback = this.nextElementSibling;
+                    
+                    if (!selected) {
+                        feedback.textContent = "Please select an answer!";
+                        feedback.style.color = "red";
+                        return;
+                    }
+                    
+                    if (parseInt(selected.value) === correctIndex) {
+                        feedback.textContent = "Correct!";
+                        feedback.style.color = "green";
+                    } else {
+                        feedback.textContent = `Incorrect! The correct answer is: ${questions.find(q => q.question === this.parentElement.querySelector('.question-text').textContent).options[correctIndex]}`;
+                        feedback.style.color = "red";
+                    }
+                });
+            });
+        }
+
+        document.getElementById('refresh').addEventListener('click', displayQuestions);
+        window.addEventListener('DOMContentLoaded', displayQuestions);
+    </script>
+</body>
+</html>
